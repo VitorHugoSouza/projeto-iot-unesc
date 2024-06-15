@@ -7,7 +7,6 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import AirIcon from '@mui/icons-material/Air';
 
 import led_green from '../assets/led_green.png';
-import led_blue from '../assets/led_blue.png';
 import led_red from '../assets/led_red.png';
 import Image from 'next/image';
 
@@ -41,24 +40,19 @@ export default function Monitoramento() {
 	useEffect(() => {
 
 		/*
-			CORES LED
-			0 - Vermelho
-			1 - Verde
-			2 - Azul
+			LED
+			0 - Ligado (Fixo)
+			1 - Piscando
 		*/
 
-		if (dadosPlaca.led === 0) {
+		if (dadosPlaca.led === 1) {
 			setCorLed(led_red)
-			setNomeCor('vermelha')
+			setNomeCor('piscando')
 			setDescricaoCor('Atenção! A temperatura ou umidade esta fora do ideal, favor verificar a sala!!')
-		} else if (dadosPlaca.led === 1) {
+		} else if (dadosPlaca.led === 0) {
 			setCorLed(led_green)
-			setNomeCor('verde')
+			setNomeCor('ligado')
 			setDescricaoCor('A sala está com a temperatura ideal.')
-		} else if (dadosPlaca.led === 2) {
-			setCorLed(led_blue)
-			setNomeCor('azul')
-			setDescricaoCor('Atenção! A sala está com uma temperatura mais baixa que a ideal, favor verificar!!')
 		}
 
 	}, [dadosPlaca.led]);
@@ -76,7 +70,7 @@ export default function Monitoramento() {
 	useEffect(() => {
 		if(dadosPlaca.umidade < 50) {
 			setDescricaoUmidade('Umidade abaixo do ideal, favor verificar a sala!')
-		} else if (dadosPlaca.umidade > 70) {
+		} else if (dadosPlaca.umidade > 80) {
 			setDescricaoUmidade('Umidade acima do ideal, favor verificar a sala!')
 		} else {
 			setDescricaoUmidade('Umidade ideal.')
@@ -85,8 +79,6 @@ export default function Monitoramento() {
 
 	return (
 		<div>
-
-			<h3>Monitoramento da placa principal </h3>
 			<Grid container spacing={3}>
 
 				<Grid item xs={12} md={4} lg={4}>
@@ -98,7 +90,7 @@ export default function Monitoramento() {
 							: ''}
 						<CardContent>
 							<Typography gutterBottom variant="h5" component="div">
-								Led na cor {nomeCor}
+								Led {nomeCor}
 							</Typography>
 							<Typography variant="body2" color="text.secondary">
 								{descricaoCor}
